@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Support Ticket Intelligence"
+description = "A support operations dashboard that tracks customer tickets, classifies urgency from issue descriptions, assigns critical cases to senior agents, creates urgent handling tasks, and checks SLA risk."
+version = "1.0.0"
+id = "artifacts/support-ticket-intelligence"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23297
+
+[services.development]
+run = "pnpm --filter @workspace/support-ticket-intelligence run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/support-ticket-intelligence", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/support-ticket-intelligence/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23297"
+BASE_PATH = "/"
